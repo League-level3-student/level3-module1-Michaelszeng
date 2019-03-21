@@ -3,6 +3,7 @@ package _01_IntroToArrayLists;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Random;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -14,11 +15,13 @@ public class _06_IPodShuffle implements ActionListener {
 	JFrame frame = new JFrame();
 	JPanel panel = new JPanel();
 	JButton button = new JButton("Play random song");
+	ArrayList<Song> songs = new ArrayList<Song>();
 
 	public _06_IPodShuffle() {
-		ArrayList<Song> songs = new ArrayList<Song>();
 		Song demo = new Song("demo.mp3");
-		Song song = new Song("path");
+		Song piano = new Song("pianoSong.mp3");
+		songs.add(demo);
+		songs.add(piano);
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.add(panel);
@@ -44,6 +47,11 @@ public class _06_IPodShuffle implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
+		if (e.getSource() == button) {
+			Random ran = new Random();
+			int choice = ran.nextInt(2);
+			songs.get(choice).play();
+		}
 
 	}
 }
