@@ -27,6 +27,7 @@ public class _02_TextUndoRedo implements KeyListener {
 	Stack<String> text = new Stack<String>();
 	Stack<String> deleted = new Stack<String>();
 	String popped;
+	boolean delete;
 	
 	public _02_TextUndoRedo() {
 		frame.add(panel);
@@ -52,14 +53,23 @@ public class _02_TextUndoRedo implements KeyListener {
 			label.setText(label.getText().substring(0, label.getText().length()-1));
 			popped = text.pop();
 			deleted.push(popped);
+			delete = true;
+			
 		}
 		else if (e.getKeyCode() == KeyEvent.VK_ALT) {
-			label.setText(label.getText() + deleted.pop());
+			if (delete == true) {
+				label.setText(label.getText() + deleted.pop());
+			}
+			else {
+				text.pop();
+				label.setText(label.getText().substring(0, label.getText().length()-1));
+			}
 		}
 		else {
 			char character = e.getKeyChar();
 			String string = "" + character;
 			label.setText(label.getText()+text.push(string));
+			delete = false;
 		}
 	}
 
