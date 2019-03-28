@@ -15,14 +15,16 @@ public class HangMan extends Utilities implements KeyListener{
 	String s;
 	int lives;
 	boolean finished;
-	String playAgain;
+	String playAgain = "";
+	boolean lost;
 	JFrame frame = new JFrame();
 	JLabel label = new JLabel();
 	JPanel panel = new JPanel();
+	Stack<String> words;
 	
 	public HangMan() {
 		
-		Stack<String> words = new Stack<String>();
+		words = new Stack<String>();
 		frame.add(panel);
 		panel.add(label);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -38,23 +40,20 @@ public class HangMan extends Utilities implements KeyListener{
 				if (words.contains(word) == false) {
 					words.push(word);
 					break; }}}
-		
-		for (int i=0; i<words.size(); i++) {
-			String secretWord = words.pop();
-			s = "";
-			for (int j=0; j<secretWord.length(); j++) {
-				s += "_";
-			}
-			s += " Lives Remaining: " + lives;
-			label.setText(s);
-			frame.pack();
-			frame.setVisible(true);
-			guessTime = true;
-			if (finished) {
-				JOptionPane.showMessageDialog(null, "Congratulations!");
-			}
-			
+		guessTime = true;
+		lost = false;
+		playAgain = "";
+		finished = false;
+		String secretWord = words.pop();
+		s = "";
+		for (int j=0; j<secretWord.length(); j++) {
+			s += "_";
 		}
+		s += " Lives Remaining: " + lives;
+		label.setText(s);
+		frame.pack();
+		frame.setVisible(true);
+		
 	}
 	
 	public static void main(String[] args) {
@@ -89,14 +88,38 @@ public class HangMan extends Utilities implements KeyListener{
 			}
 			newS += " Lives Remaining: " + lives;
 			label.setText(newS);
+		
+			
 			finished = true;
 			for (int j=0; j<label.getText().length(); j++) {
-				if (label.getText().substring(j,  j+1) == "_") {
+				if (label.getText().charAt(j) == '_') {
 					finished = false;
 				}
 			}
+			System.out.println(label.getText() + finished);
 			if (lives <= 0) {
 				playAgain = JOptionPane.showInputDialog("Game Over!\nWould you like to play again?");
+				if (playAgain.equals("yes")) {
+					HangMan newMan = new HangMan();
+				}
+			}
+			if (finished) {
+				JOptionPane.showMessageDialog(null, "Congratulations!");
+				if (words.isEmpty() == false) {
+					lost = false;
+					playAgain = "";
+					finished = false;
+					String secretWord = words.pop();
+					s = "";
+					for (int j=0; j<secretWord.length(); j++) {
+						s += "_";
+					}
+					s += " Lives Remaining: " + lives;
+					label.setText(s);
+					frame.pack();
+					frame.setVisible(true);
+					word = secretWord;
+				}
 			}
 		}
 	}
